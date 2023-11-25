@@ -1,0 +1,108 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>SSBOT Manage</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <nav class="navbar">
+            <a class="navbar-brand" href="#", style="color:azure;"><strong><h3>SSBOT - Manage</h3></strong></a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+            </div>
+        </nav>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color:azure">Số người đang dùng:</h5>
+                        <div class="userCount" style="color:azure">{{listId}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color:azure">Số tin nhắn được gửi đến SSBOT:</h5>
+                        <div class="userCount" style="color:azure">{{listMes}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="messageForm">
+                            <div class="form-group">
+                                <h5 class="card-title"style="color:azure">Gửi tin nhắn</h5>
+                                <label for="sender_id"style="color:azure">Receiver ID:</label>
+                                <input type="text" id="sender_id" name="sender_id" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="text"style="color:azure">Text:</label>
+                                <input type="text" id="text" name="text" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="response" class="mt-5"></div>
+    </div>
+
+<style>
+        body{
+            background-image: url(https://images.hdqwalls.com/wallpapers/desert-night-minimal-4k-hp.jpg);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            background-size: cover;
+        }
+      .card{
+        background-color: rgba(255, 255, 255, 0.13);
+      }
+      .form-control{
+        background-color: rgba(255, 255, 255, 0.13);
+      }
+      
+    </style>
+    <script>$(document).ready(function () {
+            $('#messageForm').submit(function (event) {
+                event.preventDefault();
+                var sender_id = $('#sender_id').val();
+                var text = $('#text').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/send',
+                    data: {
+                        sender_id: sender_id,
+                        text: text
+                    },
+                    success: function (response) {
+                        alert("Status: " + response);
+                    }
+                });
+            });
+        });
+
+
+    </script>
+  
+</body>
+
+</html>

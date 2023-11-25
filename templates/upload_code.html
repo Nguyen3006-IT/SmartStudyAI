@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mã hóa code - SmartStudy</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+  }
+
+  .mode-switch {
+    display: flex;
+    justify-content: space-between; /* Đặt khoảng cách đều giữa các phần tử */
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  #textArea {
+    width: 100%;
+    height: 150px;
+    resize: none;
+  }
+
+  #submitButton {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  /* Tùy chỉnh style cho phần select */
+  #langSelect {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    background-color: #fff;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="mode-switch">
+      <label>
+        <input type="radio" name="mode" value="text" checked>
+        Nhập Text
+      </label>
+      <label>
+        <input type="radio" name="mode" value="file">
+        Nhập Tệp
+      </label>
+    </div>
+    <div class="content">
+      <div class="text-input">
+        <textarea id="textArea" placeholder="Nhập văn bản"></textarea>
+      </div>
+      <div class="file-input">
+        <input type="file" id="fileInput">
+      </div>
+      <select id="langSelect"> <!-- Thêm select box để chọn ngôn ngữ -->
+        <option value="python">Python</option>
+        
+        
+      </select>
+      <button id="submitButton">Gửi</button>
+    </div>
+  </div>
+  <script>
+   document.addEventListener('DOMContentLoaded', function () {
+    const modeSwitch = document.querySelector('.mode-switch');
+    const textInput = document.querySelector('.text-input');
+    const fileInput = document.querySelector('.file-input');
+    const textArea = document.getElementById('textArea');
+    const fileInputField = document.getElementById('fileInput');
+    const submitButton = document.getElementById('submitButton');
+      const langSelect = document.getElementById('langSelect');
+  
+    modeSwitch.addEventListener('change', function () {
+      if (modeSwitch.querySelector('input[value="file"]').checked) {
+        textInput.style.display = 'none';
+        fileInput.style.display = 'block';
+      } else {
+        textInput.style.display = 'block';
+        fileInput.style.display = 'none';
+      }
+    });
+  
+    submitButton.addEventListener('click', function () {
+      const id = new URLSearchParams(window.location.search).get('id');
+      
+      const formData = new FormData();
+  
+      if (modeSwitch.querySelector('input[value="file"]').checked) {
+        const file = fileInputField.files[0];
+        formData.append('file', file);
+        formData.append('mode', 'file');
+      } else {
+        const code = textArea.value;
+        formData.append('text', code);
+        formData.append('mode', 'text');
+      }
+  
+      formData.append('id', id);
+      const selectedLang = langSelect.value; 
+        formData.append('lang', selectedLang);
+      fetch('https://smartstudyai.nguyen3006-it.repl.co/encode', {
+        method: 'POST',
+        body: formData,
+      })
+        alert("Thành công!!")
+        
+    });
+  });
+  </script>
+</body>
+</html>
